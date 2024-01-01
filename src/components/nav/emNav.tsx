@@ -1,5 +1,6 @@
 import data from '@/assets/data'
-import { Col, Flex, Row } from 'antd'
+import { Avatar, Button, Card, Col, Flex, Row } from 'antd'
+import { NavLink } from 'react-router-dom'
 
 export default () => {
   return (
@@ -10,14 +11,18 @@ export default () => {
             {item.map((subItem, subIndex) => {
               return (
                 <Row key={subIndex} className="flex-1 justify-center ">
-                  <Col span={8} className="flex justify-center items-center flex-1 ">
-                    <div>{subItem.imgUrl}</div>
-                    <div>{subItem.name}</div>
-                  </Col>
-                  <Col span={8} className="flex justify-center items-center flex-1 ">
-                    <div>{subItem.imgUrl}</div>
-                    <div>{subItem.name}</div>
-                  </Col>
+                  <Card className="flex justify-center items-center flex-1 p-0">
+                    <NavLink to={subItem.link} className="flex p-0">
+                      <Avatar src={<img src={subItem.imgUrl} alt="avatar" />} />
+                      <Button>{subItem.name}</Button>
+                    </NavLink>
+                  </Card>
+                  <Card className="flex justify-center items-center flex-1 p-0">
+                    <NavLink to={subItem.link} className="flex p-0">
+                      <Avatar src={<img src={subItem.imgUrl} alt="avatar" />} />
+                      <Button>{subItem.name}</Button>
+                    </NavLink>
+                  </Card>
                 </Row>
               )
             })}

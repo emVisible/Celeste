@@ -1,4 +1,5 @@
 interface data {
   name: string,
-  imgUrl: string
+  link: string,
+  imgUrl: string,
 }
