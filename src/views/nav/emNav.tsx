@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 
 export default () => {
   return (
-    <article className="flex justify-center flex-1 bg-[#353B48] py-3">
+    <article id="magicFront" className="flex justify-center flex-1 bg-[#353B48] py-3">
       {data.map((item, index) => {
         return (
           <Flex key={index} vertical gap="middle" className="flex-1 mx-3">

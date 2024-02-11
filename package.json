@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "antd": "^5.12.5",
+    "dayjs": "^1.11.10",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "path": "^0.12.7",
