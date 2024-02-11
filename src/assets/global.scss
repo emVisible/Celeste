@@ -17,3 +17,10 @@ $MaskColor: #222f3e;
 .ant-card-body {
   padding: 0;
 }
+
+.ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
