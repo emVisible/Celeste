@@ -1,8 +1,9 @@
 import { PreviewClose, PreviewOpen } from '@icon-park/react'
-import { Badge, Card } from 'antd'
+import { Avatar, Badge, Card, List } from 'antd'
 import { RefObject, SetStateAction, useEffect, useRef, useState } from 'react'
 function TodoTheme() {
-  const [focus, setFocus] = useState(false)
+  const [focus, setFocus] = useState(localStorage.getItem('theme') || false)
+  const [isFocusSet, setIsFocusSet] = useState(localStorage.getItem('theme') || false)
   const [inputs, setInputs] = useState([
     {
       key: 1,
@@ -13,22 +14,39 @@ function TodoTheme() {
   const handleMain = () => {
     setFocus(!focus)
   }
+
   return (
     <Card
       style={{ width: '200px' }}
       title={
-        <div className="flex">
+        <section className="flex">
           <div>Focus</div>
           <div id="focusTxt" className="ml-auto cursor-pointer" onClick={handleMain}>
-            {focus ? (
+            {focus && isFocusSet ? (
               <PreviewOpen theme="filled" size="24" fill="#706FD3" />
             ) : (
               <PreviewClose theme="filled" size="24" fill="#706FD3" />
             )}
           </div>
-        </div>
+        </section>
       }>
-      {focus ? (
+      {isFocusSet && localStorage.getItem('theme') ? (
+        <section>
+          <div
+            className="cursor-pointer text-center text-base py-3 transition-all hover:text-violet-400"
+            onClick={(e) => {
+              if (localStorage.getItem('theme')) {
+                localStorage.removeItem('theme')
+                setIsFocusSet(!isFocusSet)
+              }
+            }}>
+            🔶{localStorage.getItem('theme')}
+          </div>
+        </section>
+      ) : (
+        <></>
+      )}
+      {!(focus && isFocusSet) ? (
         inputs.map((item, index) => {
           return (
             <input
@@ -42,24 +60,57 @@ function TodoTheme() {
                 inputs[index].value = e.target.value
                 setInputs([...inputs])
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && inputs[index].value.length != 0) {
+                  localStorage.setItem('theme', inputs[index].value)
+                  setIsFocusSet(true)
+                  setFocus(true)
+                }
+              }}
             />
           )
         })
       ) : (
         <></>
       )}
-      <Badge>
-        <p className="opacity-35 cursor-default">All the past is prologue</p>
+      <Badge className="w-full mt-3">
+        {!(focus && isFocusSet) ? (
+          <p className="opacity-35 cursor-default text-center">Hard choice, Easy life</p>
+        ) : (
+          <></>
+        )}
       </Badge>
     </Card>
   )
 }
 
 function Todo() {
-  const [focusText, setFocusText] = useState('')
   const TodoDetail = () => {
-    return <Card title={focusText ? <div>focusText + 'Specific' </div> : <div>To set Focus</div>}></Card>
-    return <></>
+    const data = [
+      {
+        title: 'Ant Design Title 1',
+      },
+    ]
+    return (
+      <List
+        itemLayout="horizontal"
+        className="text-white cursor-pointer transition-all hover:scale-110"
+        dataSource={data}
+        renderItem={(item, index) => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={<Avatar shape="square" icon={'💠'} style={{ background: 'white', cursor: 'pointer' }} />}
+              title={
+                <p className="font-bold">
+                  {item.title}
+                </p>
+              }
+              description="Blabla"
+            />
+          </List.Item>
+        )}
+      />
+    )
   }
   return (
     <section className="flex-1 flex flex-col justify-around">
