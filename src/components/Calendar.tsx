@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 function Canlendar() {
   const [value, setValue] = useState(() => dayjs())
-  return <Calendar value={value} className="" headerRender={() => null} />
+  return <Calendar value={value}  headerRender={() => null} />
 }
 
 export default Calendar

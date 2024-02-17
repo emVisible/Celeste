@@ -8,7 +8,7 @@ function TodoList() {
   return (
     <Layout className="">
       <Sider
-        className=" overflow-clip"
+        className=" overflow-y-scroll"
         width={'15%'}
         style={{ background: 'linear-gradient(to left, #feca57, #ff9f43)' }}>
         <Todo></Todo>

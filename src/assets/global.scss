@@ -75,5 +75,31 @@ $MaskColor: #222f3e;
 
 #magicFront .ant-card-head {
   border: none;
-  
+}
+
+// 滚动条
+::-webkit-scrollbar {
+  width: 6px;
+}
+// 轨道
+::-webkit-scrollbar-track {
+  background: white;
+}
+// 滑块
+::-webkit-scrollbar-thumb {
+  // border-radius: 10px;
+  background: #ecf0f1;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bdc3c5;
 }
