@@ -1,4 +1,12 @@
-const data = [
+export const meta = [
+  { title: "视频" },
+  { title: "文字" },
+  { title: "UI" },
+  { title: "美术" },
+  { title: "路由 && 数据" },
+  { title: "其它" },
+]
+export const data = [
   [
     { name: 'Bilibili', link: "https://www.bilibili.com/", imgUrl: '/public/bilibili.png' },
     { name: 'GitHub', link: "https://github.com/emVisible", imgUrl: '/public/github.png' },
@@ -37,4 +45,3 @@ const data = [
   ],
 ] as data[][]
 
-export default data
