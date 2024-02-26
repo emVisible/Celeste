@@ -1,6 +1,7 @@
 import { PreviewClose, PreviewOpen, Tips } from '@icon-park/react'
-import { Avatar, Badge, Button, Card, List } from 'antd'
+import { Avatar, Badge, Button, Card, Input, List } from 'antd'
 import React, { RefObject, SetStateAction, useEffect, useRef, useState, use } from 'react'
+
 interface TodoStructure {
   theme: string
   details: string[]
@@ -56,7 +57,7 @@ function TodoTheme({ details, setDetails }) {
           inputs.map((item, index) => {
             return (
               <input
-                key={item.key}
+                key={index}
                 ref={inputRef}
                 type="text"
                 className="outline-none border-b-2 border-b-blue-500 text-center "
@@ -120,9 +121,8 @@ function TodoDetail({ details, setDetails }) {
       className="text-white"
       dataSource={details}
       renderItem={(item, index) => (
-        <List.Item className="transition-all cursor-pointer hover:scale-105" key={item.id}>
+        <List.Item className="transition-all cursor-pointer hover:scale-105">
           <List.Item.Meta
-            key={item.id}
             avatar={
               <Avatar
                 shape="square"
@@ -138,27 +138,30 @@ function TodoDetail({ details, setDetails }) {
             title={
               <>
                 <p className="font-bold cursor-pointer">{item.title}</p>
-                <input
+                <Input
                   type="text"
                   defaultValue={item.title}
                   onChange={(e) => {
-                    let obj = {}
-                    console.log(
-                      details.map((detail) => {
-                        if (detail.id === index) {
-                          console.log('detail', detail)
-                          obj = detail
-                          obj.title = e.target.value
-                        }
-                      }),
-                    )
-                    let tmp = details.map((detail) => {
-                      if (detail.id === index) {
-                        return obj
-                      }
-                    })
-                    setDetails(tmp)
-                    console.log('detail', details)
+                    //     let obj = {} as any
+                    //     console.log(
+                    //       details.map((detail) => {
+                    //         if (detail.id == index) {
+                    //           console.log('detail', detail)
+                    //           obj = detail
+                    //           // Object.keys(detail).map((a) => {
+                    //           //   obj[a] = detail[a]
+                    //           // })
+                    //           obj.title = e.target.value
+                    //         }
+                    //       }),
+                    //     )
+                    //     let tmp = details.map((detail) => {
+                    //       if (detail.id == index) {
+                    //         return obj
+                    //       }
+                    //     })
+                    //     setDetails(tmp)
+                    //     console.log('detail', details)
                   }}
                 />
               </>

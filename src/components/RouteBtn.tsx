@@ -1,11 +1,12 @@
 import { Avatar } from 'antd'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function RouteBtn(e: any) {
   const { avatar, location } = e
+  const navigate = useNavigate()
   const handleClick = () => {
-    console.log('location', location)
-    return <Navigate to={ "/" + location}></Navigate>
+    // console.log('location', location)
+    navigate(location)
   }
   return (
     <Avatar
