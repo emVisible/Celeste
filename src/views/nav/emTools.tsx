@@ -23,7 +23,7 @@ export default () => {
         mode="horizontal"
         items={items}
         className="flex justify-center"
-        selectedKeys={['todo']}
+        defaultSelectedKeys={['todo']}
       />
       {current == 'todo' ? <TodoList></TodoList> : <div>暂无组件</div>}
     </Layout>
