@@ -1,26 +1,28 @@
-import { PreviewClose, PreviewOpen, Tips } from '@icon-park/react'
+import store, { RootDispatch, RootState } from '@/store'
+import { appendTask, deleteTask, Task } from '@/store/todo/task'
+import { PreviewClose, PreviewOpen } from '@icon-park/react'
 import { Avatar, Badge, Button, Card, Input, List } from 'antd'
-import React, { RefObject, SetStateAction, useEffect, useRef, useState } from 'react'
+import { RefObject, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-interface TodoStructure {
-  theme: string
-  details: string[]
-}
+function TodoTheme(props: { taskTheme: string; dispatch: RootDispatch }) {
+  const { taskTheme, dispatch } = props
 
-function TodoTheme({ details, setDetails }) {
+  // focus组件状态
   const [focus, setFocus] = useState(localStorage.getItem('theme') || false)
   const [isFocusSet, setIsFocusSet] = useState(localStorage.getItem('theme') || false)
-  const [inputs, setInputs] = useState([
-    {
-      key: 1,
-      value: '',
-    },
-  ])
+
+  // 添加focus theme的input
   const inputRef: RefObject<HTMLInputElement> = useRef(null)
+  const [iptValue, setIptValue] = useState('')
+
+  // 添加task的title和description
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+
   const handleMain = () => {
     setFocus(!focus)
   }
-
   return (
     <>
       <Card
@@ -54,29 +56,22 @@ function TodoTheme({ details, setDetails }) {
           <></>
         )}
         {!(focus && isFocusSet) ? (
-          inputs.map((item, index) => {
-            return (
-              <input
-                key={index}
-                ref={inputRef}
-                type="text"
-                className="outline-none border-b-2 border-b-blue-500 text-center "
-                placeholder="To focus on..."
-                defaultValue={item.value}
-                onChange={(e) => {
-                  inputs[index].value = e.target.value
-                  setInputs([...inputs])
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && inputs[index].value.length != 0) {
-                    localStorage.setItem('theme', inputs[index].value)
-                    setIsFocusSet(true)
-                    setFocus(true)
-                  }
-                }}
-              />
-            )
-          })
+          <input
+            ref={inputRef}
+            type="text"
+            className="w-full outline-none border-b-2 border-b-blue-500 text-center "
+            placeholder="Just one thing"
+            onChange={(e) => {
+              setIptValue(e.target.value)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && iptValue.length != 0) {
+                localStorage.setItem('theme', iptValue)
+                setIsFocusSet(true)
+                setFocus(true)
+              }
+            }}
+          />
         ) : (
           <></>
         )}
@@ -88,25 +83,37 @@ function TodoTheme({ details, setDetails }) {
           )}
         </Badge>
         {focus && isFocusSet ? (
-          <Button
-            className="w-full"
-            onClick={(e) => {
-              // details.push({ title: 'New！！' })
-              // console.log('details', details)
-              // console.log('setDetails',setDetails)
-              setDetails([
-                ...details,
-                {
-                  id: details.length,
-                  title: 'NewItem',
-                  description: '...',
-                  done: false,
-                },
-              ])
-              console.log('details', details)
-            }}>
-            +
-          </Button>
+          <section className="flex flex-col items-center">
+            <Button
+              className="w-full mb-3"
+              onClick={(e) => {
+                dispatch(
+                  appendTask({
+                    id: crypto.randomUUID(),
+                    title: title || '(No Title)',
+                    description: description || '',
+                    isDone: false,
+                  }),
+                )
+              }}>
+              +
+            </Button>
+            <Input
+              prefix="🔸"
+              className="mb-3 rounded-none border-t-0 border-x-0 border-blue-400 border-b-2 border-solid shadow-none opacity-60 focus:opacity-100"
+              placeholder="title..."
+              onBlur={(e) => {
+                setTitle(e.target.value)
+              }}></Input>
+            <Input
+              prefix="🔹"
+              className="rounded-none border-t-0 border-x-0 border-blue-400 border-b-2 border-solid shadow-none opacity-60 focus:opacity-100"
+              alt="描述"
+              placeholder="detail..."
+              onBlur={(e) => {
+                setDescription(e.target.value)
+              }}></Input>
+          </section>
         ) : (
           <></>
         )}
@@ -114,7 +121,14 @@ function TodoTheme({ details, setDetails }) {
     </>
   )
 }
-function TodoDetail({ details, setDetails }) {
+function TodoDetail(props: { taskTheme: string; details: Task[]; dispatch: RootDispatch }) {
+  //props
+  const { details, taskTheme, dispatch } = props
+
+  if (details.length === 0)
+    store.dispatch((r) => {
+      console.log('r', r)
+    })
   return (
     <List
       itemLayout="horizontal"
@@ -129,44 +143,16 @@ function TodoDetail({ details, setDetails }) {
                 icon={'💠'}
                 className="hover:scale-110 bg-white cursor-pointer transition-all"
                 onClick={(e) => {
-                  // 同步修改
-                  item.done = !item.done
-                  console.log('item', item)
+                  dispatch(deleteTask(item.id))
                 }}
               />
             }
             title={
               <>
                 <p className="font-bold cursor-pointer">{item.title}</p>
-                <Input
-                  type="text"
-                  defaultValue={item.title}
-                  onChange={(e) => {
-                    //     let obj = {} as any
-                    //     console.log(
-                    //       details.map((detail) => {
-                    //         if (detail.id == index) {
-                    //           console.log('detail', detail)
-                    //           obj = detail
-                    //           // Object.keys(detail).map((a) => {
-                    //           //   obj[a] = detail[a]
-                    //           // })
-                    //           obj.title = e.target.value
-                    //         }
-                    //       }),
-                    //     )
-                    //     let tmp = details.map((detail) => {
-                    //       if (detail.id == index) {
-                    //         return obj
-                    //       }
-                    //     })
-                    //     setDetails(tmp)
-                    //     console.log('detail', details)
-                  }}
-                />
               </>
             }
-            description="Blabla"
+            description={item.description || ''}
           />
         </List.Item>
       )}
@@ -176,18 +162,15 @@ function TodoDetail({ details, setDetails }) {
 
 export default function Todo() {
   // 模拟数据
-  const [details, setDetails] = useState([
-    {
-      id: 0,
-      title: 'Ant Design Title 1',
-      description: '',
-      done: false,
-    },
-  ])
+  // const [list, setList] = useState<Task[]>()
+  const taskList = useSelector((state: RootState) => state.task!.taskList)
+  const taskTheme = useSelector((state: RootState) => state.task!.focusTask)
+  const dispatch = useDispatch() as RootDispatch
+
   return (
     <section className="px-3 py-3 w-full h-full overflow-y-scroll ">
-      <TodoTheme details={details} setDetails={setDetails} />
-      <TodoDetail details={details} setDetails={setDetails} />
+      <TodoTheme taskTheme={taskTheme} dispatch={dispatch} />
+      <TodoDetail taskTheme={taskTheme} details={taskList} dispatch={dispatch} />
     </section>
   )
 }
